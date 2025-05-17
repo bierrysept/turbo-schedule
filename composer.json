@@ -1,0 +1,25 @@
+{
+  "name": "bierrysept/turbo-schedule",
+  "description": "Some utilities for my self-efficiency",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "bierrysept",
+      "email": "bierrysept@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^9.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bierrysept\\TurboSchedule\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Bierrysept\\TurboSchedule\\Tests\\": "tests/"
+    }
+  }
+}

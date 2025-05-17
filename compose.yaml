@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+    php:
+        container_name: php
+        build:
+            dockerfile: docker/Dockerfile
+        volumes:
+            -   ./:/var/www/html
+    composer:
+        container_name: composer
+        image: composer:2.5
+        working_dir: /app
+        volumes:
+            -   ./:/app
+        command: composer install
