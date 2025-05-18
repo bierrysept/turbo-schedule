@@ -6,11 +6,11 @@ services:
         build:
             dockerfile: docker/Dockerfile
         volumes:
-            -   ./:/var/www/html
+            - ./:/var/www/html
     composer:
         container_name: composer
         image: composer:2.5
         working_dir: /app
         volumes:
-            -   ./:/app
+            - ./:/app
         command: composer install
