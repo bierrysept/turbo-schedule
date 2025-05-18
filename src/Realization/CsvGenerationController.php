@@ -43,4 +43,16 @@ class CsvGenerationController
         }
         echo "];\n";
     }
+
+    /**
+     * Debug output
+     * @used-by \Composer\EventDispatcher\EventDispatcher
+     * @return void
+     */
+    public static function printR():void
+    {
+        $file = file_get_contents(dirname(__DIR__)."/temp/boosted.csv");
+        $converter = new CsvToArrayArrayConverter();
+        print_r($converter->convert($file));
+    }
 }
