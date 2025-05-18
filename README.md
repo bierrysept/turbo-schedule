@@ -15,3 +15,8 @@ You can make pull requests here. You are welcome.
 
 ## Licence
 GNU GPL v3
+
+## Code Coverage
+As Uncle Bob said, Code Coverage is almost about 100%.
+Code within "Realization" has no coverage,
+Code outside "Realization" has 100% coverage.
