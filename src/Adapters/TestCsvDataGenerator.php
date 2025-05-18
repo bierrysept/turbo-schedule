@@ -1,11 +1,17 @@
 <?php
 
-namespace Bierrysept\TurboSchedule;
+namespace Bierrysept\TurboSchedule\Adapters;
 
 class TestCsvDataGenerator
 {
 
     private int $residue = 0;
+
+    /**
+     * Generate Cell dummy
+     * @param int $index
+     * @return string
+     */
     public function generateCell(int $index): string
     {
         $this->residue = intdiv($index, 3);
@@ -21,12 +27,21 @@ class TestCsvDataGenerator
         return "";
     }
 
+    /**
+     * Get residue from dividing
+     * @return int
+     */
     public function getResidue(): int
     {
         return $this->residue;
     }
 
-    public function generateLine(int $index): string
+    /**
+     * Generate line dummy
+     * @param int $index
+     * @return string
+     */
+    public function generateRow(int $index): string
     {
         $this->residue = intdiv($index, 2);
         $lineIndex = $index % 2;
@@ -34,14 +49,19 @@ class TestCsvDataGenerator
         if ($lineIndex === 0) {
             return $firstCell;
         }
-        return "$firstCell,".$this->generateLine($this->residue);
+        return "$firstCell,".$this->generateRow($this->residue);
     }
 
+    /**
+     * Generate csv file dummy
+     * @param int $index
+     * @return string
+     */
     public function generateFile(int $index): string
     {
         $this->residue = intdiv($index, 2);
         $fileIndex = $index % 2;
-        $firstLine = $this->generateLine($this->residue);
+        $firstLine = $this->generateRow($this->residue);
         if ($fileIndex === 0) {
             return $firstLine;
         }

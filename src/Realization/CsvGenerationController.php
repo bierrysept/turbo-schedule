@@ -1,14 +1,27 @@
 <?php
+/**
+ * @noinspection PhpUndefinedClassInspection
+ * @noinspection PhpUndefinedNamespaceInspection
+ * @noinspection UnknownInspectionInspection
+ */
 
-namespace Bierrysept\TurboSchedule;
+namespace Bierrysept\TurboSchedule\Realization;
 
+use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
+use Bierrysept\TurboSchedule\Adapters\TestCsvDataGenerator;
 use Composer\Script\Event;
 
+/**
+ * Controller for run scripts from composer
+ * @used-by \Composer\EventDispatcher\EventDispatcher
+ */
 class CsvGenerationController
 {
     /**
+     * Generate test CSV data
      * @param Event $event
      * @return void
+     * @used-by \Composer\EventDispatcher\EventDispatcher
      */
     public static function generateCsv(Event $event):void
     {

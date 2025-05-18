@@ -2,7 +2,7 @@
 
 namespace Bierrysept\TurboSchedule\Tests;
 
-use Bierrysept\TurboSchedule\TestCsvDataGenerator;
+use Bierrysept\TurboSchedule\Adapters\TestCsvDataGenerator;
 use PHPUnit\Framework\TestCase;
 
 class TestCsvDataGeneratorTest extends TestCase
@@ -48,7 +48,7 @@ class TestCsvDataGeneratorTest extends TestCase
 
     public function testOneZeroLine(): void
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(0);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(0);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("", $testCsvData);
         $this->assertEquals(0, $residue);
@@ -56,7 +56,7 @@ class TestCsvDataGeneratorTest extends TestCase
 
     public function testOneFirstLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(1);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(1);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals(",", $testCsvData);
         $this->assertEquals(0, $residue);
@@ -64,7 +64,7 @@ class TestCsvDataGeneratorTest extends TestCase
 
     public function testOneSecondLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(2);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(2);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("a", $testCsvData);
         $this->assertEquals(0, $residue);
@@ -72,14 +72,14 @@ class TestCsvDataGeneratorTest extends TestCase
 
     public function testOneThirdLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(3);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(3);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("a,", $testCsvData);
         $this->assertEquals(0, $residue);
     }
     public function testOneFourthLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(4);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(4);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("\"a\"", $testCsvData);
         $this->assertEquals(0, $residue);
@@ -87,14 +87,14 @@ class TestCsvDataGeneratorTest extends TestCase
 
     public function testOneFivethLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(5);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(5);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("\"a\",", $testCsvData);
         $this->assertEquals(0, $residue);
     }
     public function testCellAndQuotedCellLine()
     {
-        $testCsvData = $this->testCsvDataGenerator->generateLine(27);
+        $testCsvData = $this->testCsvDataGenerator->generateRow(27);
         $residue = $this->testCsvDataGenerator->getResidue();
         $this->assertEquals("a,\"a\"", $testCsvData);
         $this->assertEquals(0, $residue);
