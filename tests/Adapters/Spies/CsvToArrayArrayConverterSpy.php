@@ -1,6 +1,6 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests\Spies;
+namespace Bierrysept\TurboSchedule\Tests\Adapters\Spies;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 
@@ -15,6 +15,12 @@ class CsvToArrayArrayConverterSpy extends CsvToArrayArrayConverter
             ['id', 'type', "task name"],
             ['10', 'bugfix', "bugfix latte cup"],
             ['15', 'feature', "Make more milkier"]
+        ],
+        "id,type,\"task name\"\n10,bugfix,\"bugfix latte cup\"\n15,feature,\"Make more milkier\"\n" => [
+            ['id', 'type', "task name"],
+            ['10', 'bugfix', "bugfix latte cup"],
+            ['15', 'feature', "Make more milkier"],
+            ['']
         ]
     ];
     private bool $wasConvert = false;

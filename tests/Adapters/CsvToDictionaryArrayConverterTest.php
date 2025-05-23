@@ -1,10 +1,10 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests;
+namespace Bierrysept\TurboSchedule\Tests\Adapters;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 use Bierrysept\TurboSchedule\Adapters\CsvToDictionaryArrayConverter;
-use Bierrysept\TurboSchedule\Tests\Spies\CsvToArrayArrayConverterSpy;
+use Bierrysept\TurboSchedule\Tests\Adapters\Spies\CsvToArrayArrayConverterSpy;
 use PHPUnit\Framework\TestCase;
 
 class CsvToDictionaryArrayConverterTest extends TestCase
@@ -49,6 +49,24 @@ class CsvToDictionaryArrayConverterTest extends TestCase
     public function testConvertHeaderAndTwoRows(): void
     {
         $input = "id,type,\"task name\"\n10,bugfix,\"bugfix latte cup\"\n15,feature,\"Make more milkier\"";
+        $expected = [
+            [
+                'id' => '10',
+                'type' => 'bugfix',
+                "task name" => "bugfix latte cup",
+            ],
+            [
+                'id' => '15',
+                'type' => 'feature',
+                "task name" => "Make more milkier",
+            ]
+        ];
+        $this->runRegularTest($input, $expected);
+    }
+
+    public function testConvertWithEndEol(): void
+    {
+        $input = "id,type,\"task name\"\n10,bugfix,\"bugfix latte cup\"\n15,feature,\"Make more milkier\"\n";
         $expected = [
             [
                 'id' => '10',

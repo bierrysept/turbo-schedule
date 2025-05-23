@@ -1,6 +1,6 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests;
+namespace Bierrysept\TurboSchedule\Tests\Adapters;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 use PHPUnit\Framework\TestCase;

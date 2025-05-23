@@ -8,6 +8,7 @@
 namespace Bierrysept\TurboSchedule\Realization;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
+use Bierrysept\TurboSchedule\Adapters\CsvToDictionaryArrayConverter;
 use Bierrysept\TurboSchedule\Adapters\TestCsvDataGenerator;
 use Composer\Script\Event;
 
@@ -47,12 +48,15 @@ class CsvGenerationController
     /**
      * Debug output
      * @used-by \Composer\EventDispatcher\EventDispatcher
+     * @param Event $event
      * @return void
      */
-    public static function printR():void
+    public static function printR(Event $event):void
     {
-        $file = file_get_contents(dirname(__DIR__)."/temp/boosted.csv");
-        $converter = new CsvToArrayArrayConverter();
+        $file = file_get_contents(dirname(__DIR__, 2)."/temp/boosted.csv");
+//        $converter = new CsvToArrayArrayConverter();
+        $converter = new CsvToDictionaryArrayConverter();
+        $converter->setCsvConverter(new CsvToArrayArrayConverter());
         print_r($converter->convert($file));
     }
 }

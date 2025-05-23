@@ -15,6 +15,9 @@ class CsvToDictionaryArrayConverter
 
         $output = [];
         foreach ($rawTable as $rawRow) {
+            if ($rawRow === ['']) {
+                continue;
+            }
             $output []= array_combine($header, $rawRow);
         }
          return $output;
