@@ -26,4 +26,9 @@ class Year
         $newValue = $oldValue === 1 ? -1 : $oldValue - 1;
         return new Year($newValue);
     }
+
+    public function equals(Year $year): bool
+    {
+        return $year->getValue() === $this->getValue();
+    }
 }
