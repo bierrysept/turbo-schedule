@@ -65,4 +65,5 @@ class DayTest extends TestCase
         $this->assertEquals(28, $actualPrevDay->getDay());
         $this->assertTrue($actualPrevDay->equals($prevDay));
     }
+
 }

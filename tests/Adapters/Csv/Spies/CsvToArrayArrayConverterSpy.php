@@ -1,6 +1,6 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests\Adapters\Spies;
+namespace Bierrysept\TurboSchedule\Tests\Adapters\Csv\Spies;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests\Adapters;
+namespace Bierrysept\TurboSchedule\Tests\Adapters\Csv;
 
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 use Bierrysept\TurboSchedule\Adapters\CsvToDictionaryArrayConverter;
-use Bierrysept\TurboSchedule\Tests\Adapters\Spies\CsvToArrayArrayConverterSpy;
+use Bierrysept\TurboSchedule\Tests\Adapters\Csv\Spies\CsvToArrayArrayConverterSpy;
 use PHPUnit\Framework\TestCase;
 
 class CsvToDictionaryArrayConverterTest extends TestCase
