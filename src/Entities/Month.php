@@ -4,6 +4,20 @@ namespace Bierrysept\TurboSchedule\Entities;
 
 class Month
 {
+    private const MONTH_MAX_DAY = [
+        1 => 31,
+//        2 => 29/28
+        3 => 31,
+        4 => 30,
+        5 => 31,
+        6 => 30,
+        7 => 31,
+        8 => 31,
+        9 => 30,
+        10 => 31,
+        11 => 30,
+        12 => 31
+    ];
     private int $number;
     private Year $year;
 
@@ -60,5 +74,14 @@ class Month
             $newYear = $this->year;
         }
         return new Month($newMonth, $newYear);
+    }
+
+    public function getMaxDay(): int
+    {
+        if ($this->number === 2) {
+            return $this->year->isLeap() ? 29 : 28;
+        }
+
+        return self::MONTH_MAX_DAY[$this->number];
     }
 }

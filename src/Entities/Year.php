@@ -31,4 +31,17 @@ class Year
     {
         return $year->getValue() === $this->getValue();
     }
+
+    public function isLeap()
+    {
+        if (!($this->value % 400)) {
+            return true;
+        }
+
+        if (!($this->value % 100)) {
+            return false;
+        }
+
+        return !($this->value % 4);
+    }
 }

@@ -10,14 +10,14 @@ class MonthTest extends TestCase
 {
     public function testJustCreate(): void
     {
-        $mount = new Month(7, 2023);
-        $this->assertEquals(7, $mount->getNumber());
-        $this->assertEquals(2023, $mount->getYear()->getValue());
+        $month = new Month(7, 2023);
+        $this->assertEquals(7, $month->getNumber());
+        $this->assertEquals(2023, $month->getYear()->getValue());
 
         $year = new Year(2017);
-        $mount = new Month(9, $year);
-        $this->assertEquals(9, $mount->getNumber());
-        $this->assertEquals($year, $mount->getYear());
+        $month = new Month(9, $year);
+        $this->assertEquals(9, $month->getNumber());
+        $this->assertEquals($year, $month->getYear());
     }
 
     public function testEquals(): void
@@ -60,4 +60,21 @@ class MonthTest extends TestCase
         $this->assertTrue($actualPrevMonth->equals($prevMonth));
     }
 
+    public function testMaxDay()
+    {
+        $this->assertEquals(31, (new Month(1, 2020))->getMaxDay());
+        $this->assertEquals(31, (new Month(3, 2020))->getMaxDay());
+        $this->assertEquals(31, (new Month(5, 2020))->getMaxDay());
+        $this->assertEquals(31, (new Month(7, 2020))->getMaxDay());
+        $this->assertEquals(31, (new Month(8, 2020))->getMaxDay());
+        $this->assertEquals(31, (new Month(10, 2020))->getMaxDay());
+
+        $this->assertEquals(30, (new Month(4, 2020))->getMaxDay());
+        $this->assertEquals(30, (new Month(6, 2020))->getMaxDay());
+        $this->assertEquals(30, (new Month(9, 2020))->getMaxDay());
+        $this->assertEquals(30, (new Month(11, 2020))->getMaxDay());
+
+        $this->assertEquals(29, (new Month(2, 2020))->getMaxDay());
+        $this->assertEquals(28, (new Month(2, 2021))->getMaxDay());
+    }
 }

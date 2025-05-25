@@ -36,24 +36,31 @@ class YearTest extends TestCase
         $this->assertEquals(2011, $this->year2->getPrevYear()->getValue());
     }
 
-    public function testPrevFirstYear()
+    public function testPrevFirstYear(): void
     {
         $firstYear = new Year(1);
         $this->assertEquals(-1, $firstYear->getPrevYear()->getValue());
     }
 
-    public function testFirstEraYearNext()
+    public function testFirstEraYearNext(): void
     {
         $firstYear = new Year(-1);
         $this->assertEquals(1, $firstYear->getNextYear()->getValue());
     }
 
-    public function testEquals()
+    public function testEquals(): void
     {
         $this->assertTrue($this->year->equals($this->year));
         $this->assertFalse($this->year->equals($this->year2));
         $this->assertFalse($this->year2->equals($this->year));
         $this->assertTrue($this->year2->equals($this->year2));
         $this->assertTrue((new Year(2012))->equals(new Year(2012)));
+    }
+
+    public function testIsLeapYear(): void
+    {
+        $this->assertTrue((new Year(2000))->isLeap());
+        $this->assertTrue((new Year(1904))->isLeap());
+        $this->assertFalse((new Year(1900))->isLeap());
     }
 }
