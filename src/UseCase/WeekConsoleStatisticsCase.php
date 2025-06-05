@@ -4,20 +4,20 @@ namespace Bierrysept\TurboSchedule\UseCase;
 
 use Bierrysept\TurboSchedule\Adapters\Entities\DictionaryArrayToTimeTracksConverter;
 use Bierrysept\TurboSchedule\Entities\Statistics;
-use Bierrysept\TurboSchedule\Tests\UseCase\Spies\TimeTrackDataRepositorySpy;
 use Bierrysept\TurboSchedule\Tests\UseCase\Spies\WeekStatisticConsolePresenterSpy;
+use Bierrysept\TurboSchedule\UseCase\Interfaces\TimeTrackDataRepositoryInterface;
 use Exception;
 
 class WeekConsoleStatisticsCase
 {
 
-    private TimeTrackDataRepositorySpy $timeTrackDataRepository;
+    private TimeTrackDataRepositoryInterface $timeTrackDataRepository;
     private WeekStatisticConsolePresenterSpy $weekStatisticConsolePresenterSpy;
     public function __construct()
     {
     }
 
-    public function setTimeTrackDataRepository(TimeTrackDataRepositorySpy $timeTrackDataRepositorySpy): void
+    public function setTimeTrackDataRepository(TimeTrackDataRepositoryInterface $timeTrackDataRepositorySpy): void
     {
         $this->timeTrackDataRepository = $timeTrackDataRepositorySpy;
     }

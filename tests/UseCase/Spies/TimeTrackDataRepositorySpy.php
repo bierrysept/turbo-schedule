@@ -2,7 +2,9 @@
 
 namespace Bierrysept\TurboSchedule\Tests\UseCase\Spies;
 
-class TimeTrackDataRepositorySpy
+use Bierrysept\TurboSchedule\UseCase\Interfaces\TimeTrackDataRepositoryInterface;
+
+class TimeTrackDataRepositorySpy implements TimeTrackDataRepositoryInterface
 {
 
     private bool $wasAskedAll = false;
