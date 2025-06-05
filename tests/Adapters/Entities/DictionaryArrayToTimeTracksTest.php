@@ -5,11 +5,15 @@ namespace Bierrysept\TurboSchedule\Tests\Adapters\Entities;
 use Bierrysept\TurboSchedule\Adapters\Entities\DictionaryArrayToTimeTracksConverter;
 use Bierrysept\TurboSchedule\Entities\TimeTrack;
 use DateTime;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class DictionaryArrayToTimeTracksTest extends TestCase
 {
-    public function testConvertEmpty()
+    /**
+     * @throws Exception
+     */
+    public function testConvertEmpty(): void
     {
         $input = [];
         $expected = [];
@@ -18,7 +22,10 @@ class DictionaryArrayToTimeTracksTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testConvertToOneTimeTrack()
+    /**
+     * @throws Exception
+     */
+    public function testConvertToOneTimeTrack(): void
     {
         $input = [
             [

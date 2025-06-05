@@ -4,7 +4,7 @@ namespace Bierrysept\TurboSchedule\Entities;
 
 class Year
 {
-    public function __construct(private int $value)
+    public function __construct(private readonly int $value)
     {
 
     }

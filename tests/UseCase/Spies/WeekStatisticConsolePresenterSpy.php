@@ -2,7 +2,9 @@
 
 namespace Bierrysept\TurboSchedule\Tests\UseCase\Spies;
 
-class WeekStatisticConsolePresenterSpy
+use Bierrysept\TurboSchedule\UseCase\Interfaces\WeekStatisticConsolePresenterInterface;
+
+class WeekStatisticConsolePresenterSpy implements WeekStatisticConsolePresenterInterface
 {
 
     private bool $wasCalledPresent = false;
@@ -17,10 +19,10 @@ class WeekStatisticConsolePresenterSpy
         return $this->wasCalledPresent;
     }
 
-    public function present(array $array): void
+    public function present(array $presentData): void
     {
         $this->wasCalledPresent = true;
-        $this->inputData = $array;
+        $this->inputData = $presentData;
     }
 
     public function getInputData(): array

@@ -22,7 +22,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testTwoEmptyCells()
+    public function testTwoEmptyCells(): void
     {
         $input = ",";
         $converter = $this->csvToArrayArrayConverter;
@@ -31,7 +31,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testTwoCellsThenEmptyRow()
+    public function testTwoCellsThenEmptyRow(): void
     {
         $input = ",\n";
         $converter = $this->csvToArrayArrayConverter;
@@ -40,7 +40,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testAloneCell()
+    public function testAloneCell(): void
     {
         $input = "Test";
         $expectedArrayArray = [["Test"]];
@@ -48,7 +48,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testCellWithEmptyCell() // 7
+    public function testCellWithEmptyCell(): void
     {
         $input = "Test,\n";
         $expectedArrayArray = [["Test", ""], [""]];
@@ -56,7 +56,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testQuotedCell() // 8
+    public function testQuotedCell(): void
     {
         $input = "\"Test,Test\nTest\"";
         $expectedArrayArray = [["Test,Test\nTest"]];
@@ -64,7 +64,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testQutedCellAndRow() // 9
+    public function testQuotedCellAndRow(): void
     {
         $input = "\"Test,Test\nTest\"\n";
         $expectedArrayArray = [["Test,Test\nTest"], [""]];
@@ -72,7 +72,7 @@ class CsvToArrayArrayConverterTest extends TestCase
         $this->assertEquals($expectedArrayArray, $actualArrayArray);
     }
 
-    public function testQutedCellAndCell() // 9
+    public function testQuotedCellAndCell(): void
     {
         $input = "\"Test,Test\nTest\",";
         $expectedArrayArray = [["Test,Test\nTest", ""]];

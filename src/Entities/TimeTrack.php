@@ -4,10 +4,9 @@ namespace Bierrysept\TurboSchedule\Entities;
 
 use DateTime;
 
-class TimeTrack
+readonly class TimeTrack
 {
-
-    public function __construct(private readonly string $activity, private readonly DateTime $start, private readonly string $duration)
+    public function __construct(private string $activity, private DateTime $start, private string $duration)
     {
     }
 
