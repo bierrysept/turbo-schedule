@@ -8,6 +8,8 @@ use Exception;
 
 class DictionaryArrayToTimeTracksConverter
 {
+
+
     /**
      * @throws Exception
      */

@@ -42,6 +42,8 @@ class Statistics
         $this->timeTracks[$date][]= $timeTrack;
     }
 
+
+
     public function getDayStatistics(string $dateYmd): array
     {
         $defaultTime = "24:00:00";
@@ -101,6 +103,26 @@ class Statistics
             $defaultTimeHours--;
         }
         return sprintf("%02d:%02d:%02d", $defaultTimeHours, $defaultTimeMinutes, $defaultTimeSeconds);
+    }
+
+    public function addTracks(array $timeTracks): void
+    {
+        foreach ($timeTracks as $timeTrack) {
+            $this->addTrack($timeTrack);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllDaysStatistics(): array
+    {
+        $output = [];
+        foreach ($this->timeTracks as $dateYmd => $timeTracks) {
+            $date = (new DateTime($dateYmd))->format("d.m.Y");
+            $output[$date] = $this->getDayStatistics($dateYmd);
+        }
+        return $output;
     }
 
 }

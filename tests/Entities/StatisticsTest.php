@@ -5,11 +5,15 @@ namespace Bierrysept\TurboSchedule\Tests\Entities;
 use Bierrysept\TurboSchedule\Entities\Statistics;
 use Bierrysept\TurboSchedule\Entities\TimeTrack;
 use DateTime;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class StatisticsTest extends TestCase
 {
-    public function testOutputEmpty()
+    /**
+     * @throws Exception
+     */
+    public function testOutputEmpty(): void
     {
         $statistics = new Statistics();
         $expectedArray = [
@@ -27,7 +31,11 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
 
     }
-    public function testOutputAfterAdd()
+
+    /**
+     * @throws Exception
+     */
+    public function testOutputAfterAdd(): void
     {
         $timeTrack = new TimeTrack(
             "Family & friends",
@@ -52,7 +60,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    public function testGetStatisticByDay()
+    public function testGetStatisticByDay(): void
     {
         $timeTrack = new TimeTrack(
             "Family & friends",
@@ -69,7 +77,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    public function testAddSevralTimeTracks ()
+    public function testAddSeveralTimeTracks (): void
     {
         $timeTrack1 = new TimeTrack(
             "Family & friends",
@@ -93,7 +101,7 @@ class StatisticsTest extends TestCase
         $this->assertEquals($expectedArray, $actualArray);
     }
 
-    public function testAddSevralSameTimeTracks()
+    public function testAddSeveralSameTimeTracks(): void
     {
         $timeTrack1 = new TimeTrack(
             "Family & friends",
@@ -113,6 +121,34 @@ class StatisticsTest extends TestCase
             'Procrastination' => '21:00:00',
         ];
         $actualArray = $statistics->getDayStatistics("2025-05-19");
+        $this->assertEquals($expectedArray, $actualArray);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testAddSeveralSameTimeTracksWithAllDaysStatistic(): void
+    {
+        $timeTrack1 = new TimeTrack(
+            "Family & friends",
+            new DateTime("2025-05-19 20:00:00"),
+            "02:00:00"
+        );
+        $timeTrack2 = new TimeTrack(
+            "Family & friends",
+            new DateTime("2025-05-19 08:00:00"),
+            "01:00:00"
+        );
+        $statistics = new Statistics();
+        $statistics->addTrack($timeTrack1);
+        $statistics->addTrack($timeTrack2);
+        $expectedArray = [
+            '19.05.2025' => [
+                "Family & friends" => "03:00:00",
+                'Procrastination' => '21:00:00',
+            ]
+        ];
+        $actualArray = $statistics->getAllDaysStatistics();
         $this->assertEquals($expectedArray, $actualArray);
     }
 }
