@@ -1,6 +1,6 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Entities;
+namespace Bierrysept\TurboSchedule\Entities\TimeTrack;
 
 use DateTime;
 
@@ -46,11 +46,11 @@ readonly class TimeTrack
             return false;
         }
 
-        if ($this->start->format("Y-m-d H:i:s") !== $timeTrack->start->format("Y-m-d H:i:s")) {
+        if ($this->duration !== $timeTrack->duration) {
             return false;
         }
 
-        if ($this->duration !== $timeTrack->duration) {
+        if ($this->start->format("Y-m-d H:i:s") !== $timeTrack->start->format("Y-m-d H:i:s")) {
             return false;
         }
         return true;

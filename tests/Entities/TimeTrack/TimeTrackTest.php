@@ -1,8 +1,8 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests\Entities;
+namespace Bierrysept\TurboSchedule\Tests\Entities\TimeTrack;
 
-use Bierrysept\TurboSchedule\Entities\TimeTrack;
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrack;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

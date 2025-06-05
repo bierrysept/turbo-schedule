@@ -1,14 +1,14 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Tests\Adapters\Entities;
+namespace Bierrysept\TurboSchedule\Tests\Entities\TimeTrack;
 
-use Bierrysept\TurboSchedule\Adapters\Entities\DictionaryArrayToTimeTracksConverter;
-use Bierrysept\TurboSchedule\Entities\TimeTrack;
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrack;
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrackFactory;
 use DateTime;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class DictionaryArrayToTimeTracksTest extends TestCase
+class TimeTrackFactoryTest extends TestCase
 {
     /**
      * @throws Exception
@@ -17,7 +17,7 @@ class DictionaryArrayToTimeTracksTest extends TestCase
     {
         $input = [];
         $expected = [];
-        $converter = new DictionaryArrayToTimeTracksConverter();
+        $converter = new TimeTrackFactory();
         $actual = $converter->convert($input);
         $this->assertEquals($expected, $actual);
     }
@@ -45,7 +45,7 @@ class DictionaryArrayToTimeTracksTest extends TestCase
             new DateTime("2025-04-14 07:42:50"),
             "00:04:23"
         );
-        $converter = new DictionaryArrayToTimeTracksConverter();
+        $converter = new TimeTrackFactory();
         $actual = $converter->convert($input);
         $this->assertTrue($expectedTimeTrack->equals($actual[0]));
     }

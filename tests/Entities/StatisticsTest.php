@@ -3,7 +3,7 @@
 namespace Bierrysept\TurboSchedule\Tests\Entities;
 
 use Bierrysept\TurboSchedule\Entities\Statistics;
-use Bierrysept\TurboSchedule\Entities\TimeTrack;
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrack;
 use DateTime;
 use Exception;
 use PHPUnit\Framework\TestCase;

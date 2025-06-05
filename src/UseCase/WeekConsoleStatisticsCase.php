@@ -2,8 +2,8 @@
 
 namespace Bierrysept\TurboSchedule\UseCase;
 
-use Bierrysept\TurboSchedule\Adapters\Entities\DictionaryArrayToTimeTracksConverter;
 use Bierrysept\TurboSchedule\Entities\Statistics;
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrackFactory;
 use Bierrysept\TurboSchedule\UseCase\Interfaces\TimeTrackDataRepositoryInterface;
 use Bierrysept\TurboSchedule\UseCase\Interfaces\WeekStatisticConsolePresenterInterface;
 use Exception;
@@ -33,7 +33,7 @@ class WeekConsoleStatisticsCase
     public function run(): void
     {
         $data = $this->timeTrackDataRepository->getAll();
-        $converter = new DictionaryArrayToTimeTracksConverter();
+        $converter = new TimeTrackFactory();
         $timeTracks = $converter->convert($data);
         $statistic = new Statistics();
         $statistic->addTracks($timeTracks);

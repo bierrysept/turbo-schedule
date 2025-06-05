@@ -2,6 +2,7 @@
 
 namespace Bierrysept\TurboSchedule\Entities;
 
+use Bierrysept\TurboSchedule\Entities\TimeTrack\TimeTrack;
 use DateTime;
 use Exception;
 

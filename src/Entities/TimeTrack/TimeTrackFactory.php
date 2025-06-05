@@ -1,12 +1,11 @@
 <?php
 
-namespace Bierrysept\TurboSchedule\Adapters\Entities;
+namespace Bierrysept\TurboSchedule\Entities\TimeTrack;
 
-use Bierrysept\TurboSchedule\Entities\TimeTrack;
 use DateTime;
 use Exception;
 
-class DictionaryArrayToTimeTracksConverter
+class TimeTrackFactory
 {
 
 
