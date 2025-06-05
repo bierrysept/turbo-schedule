@@ -43,7 +43,6 @@ class Statistics
     }
 
 
-
     public function getDayStatistics(string $dateYmd): array
     {
         $defaultTime = "24:00:00";
@@ -52,29 +51,10 @@ class Statistics
         foreach ($this->timeTracks[$dateYmd] ?? [] as $timeTrack) {
             $activity = $timeTrack->getActivity();
             $duration = $timeTrack->getDuration();
-            if (!isset($outputByDate[$activity])) {
-                $outputByDate[$activity] = $duration;
+            if (isset($outputByDate[$activity])) {
+                $outputByDate[$activity] = $this->addDurationByActivity($outputByDate[$activity], $duration);
             } else {
-                $oldDuration = $outputByDate[$activity];
-                [$oldDurationHours, $oldDurationMinutes, $oldDurationSeconds] = explode(":", $oldDuration);
-                [$durationHours, $durationMinutes, $durationSeconds] = explode(':', $duration);
-                $newDurationHours = (int) $oldDurationHours + (int) $durationHours;
-                $newDurationMinutes = (int) $oldDurationMinutes + (int) $durationMinutes;
-                $newDurationSeconds = (int) $oldDurationSeconds + (int) $durationSeconds;
-                if ($newDurationSeconds > 59) {
-                    $newDurationSeconds -= 60;
-                    $newDurationMinutes++;
-                }
-                if ($newDurationMinutes > 59) {
-                    $newDurationMinutes -= 60;
-                    $newDurationHours++;
-                }
-                $outputByDate[$activity] = sprintf(
-                    "%02d:%02d:%02d",
-                    $newDurationHours,
-                    $newDurationMinutes,
-                    $newDurationSeconds
-                );
+                $outputByDate[$activity] = $duration;
             }
             $defaultTime = $this->subDurationFromDefaultTime($defaultTime, $duration);
         }
@@ -125,4 +105,31 @@ class Statistics
         return $output;
     }
 
+    /**
+     * @param string $oldDuration
+     * @param string $duration
+     * @return string
+     */
+    private function addDurationByActivity(string $oldDuration, string $duration): string
+    {
+        [$oldDurationHours, $oldDurationMinutes, $oldDurationSeconds] = explode(":", $oldDuration);
+        [$durationHours, $durationMinutes, $durationSeconds] = explode(':', $duration);
+        $newDurationHours = (int) $oldDurationHours + (int) $durationHours;
+        $newDurationMinutes = (int) $oldDurationMinutes + (int) $durationMinutes;
+        $newDurationSeconds = (int) $oldDurationSeconds + (int) $durationSeconds;
+        if ($newDurationSeconds > 59) {
+            $newDurationSeconds -= 60;
+            $newDurationMinutes++;
+        }
+        if ($newDurationMinutes > 59) {
+            $newDurationMinutes -= 60;
+            $newDurationHours++;
+        }
+        return sprintf(
+            "%02d:%02d:%02d",
+            $newDurationHours,
+            $newDurationMinutes,
+            $newDurationSeconds
+        );
+    }
 }
