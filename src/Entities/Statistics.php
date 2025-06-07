@@ -12,6 +12,9 @@ class Statistics
     private const DEFAULT_ACTIVITY = 'Procrastination';
 
     private array $timeTracks = [];
+
+    private array $skipDays = [];
+
     public function __construct()
     {
     }
@@ -28,6 +31,10 @@ class Statistics
         while ($fromDateTime <= $toDateTime) {
             $date = $fromDateTime->format("d.m.Y");
             $dateYmd = $fromDateTime->format("Y-m-d");
+            if (in_array($dateYmd, $this->skipDays, true)) {
+                $fromDateTime->modify("+1 day");
+                continue;
+            }
             $outputByDate = $this->getDayStatistics($dateYmd);
             $output[$date] = $outputByDate;
             $fromDateTime->modify("+1 day");
@@ -101,6 +108,9 @@ class Statistics
         $output = [];
         foreach ($this->timeTracks as $dateYmd => $timeTracks) {
             $date = (new DateTime($dateYmd))->format("d.m.Y");
+            if (in_array($dateYmd, $this->skipDays, true)) {
+                continue;
+            }
             $output[$date] = $this->getDayStatistics($dateYmd);
         }
         return $output;
@@ -132,5 +142,10 @@ class Statistics
             $newDurationMinutes,
             $newDurationSeconds
         );
+    }
+
+    public function addSkipDay(string $string)
+    {
+        $this->skipDays []= $string;
     }
 }

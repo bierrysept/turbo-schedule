@@ -10,12 +10,18 @@ use PHPUnit\Framework\TestCase;
 
 class StatisticsTest extends TestCase
 {
+    private Statistics $statistics;
+
+    public function setUp(): void
+    {
+        $this->statistics = new Statistics();
+    }
+
     /**
      * @throws Exception
      */
     public function testOutputEmpty(): void
     {
-        $statistics = new Statistics();
         $expectedArray = [
             '19.05.2025' => [
                 'Procrastination' => '24:00:00',
@@ -27,9 +33,26 @@ class StatisticsTest extends TestCase
                 'Procrastination' => '24:00:00',
             ],
         ];
-        $actualArray = $statistics->getDaysStatistics("2025-05-19", "2025-05-21");
+        $actualArray = $this->statistics->getDaysStatistics("2025-05-19", "2025-05-21");
         $this->assertEquals($expectedArray, $actualArray);
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function testSkipDate(): void
+    {
+        $expectedArray = [
+            '19.05.2025' => [
+                'Procrastination' => '24:00:00',
+            ],
+            '21.05.2025' => [
+                'Procrastination' => '24:00:00',
+            ],
+        ];
+        $this->statistics->addSkipDay("2025-05-20");
+        $actualArray = $this->statistics->getDaysStatistics("2025-05-19", "2025-05-21");
+        $this->assertEquals($expectedArray, $actualArray);
     }
 
     /**
@@ -42,8 +65,7 @@ class StatisticsTest extends TestCase
             new DateTime("2025-05-19 20:00:00"),
             "02:00:00"
         );
-        $statistics = new Statistics();
-        $statistics->addTrack($timeTrack);
+        $this->statistics->addTrack($timeTrack);
         $expectedArray = [
             '19.05.2025' => [
                 "Family & friends" => "02:00:00",
@@ -56,7 +78,7 @@ class StatisticsTest extends TestCase
                 'Procrastination' => '24:00:00',
             ],
         ];
-        $actualArray = $statistics->getDaysStatistics("2025-05-19", "2025-05-21");
+        $actualArray = $this->statistics->getDaysStatistics("2025-05-19", "2025-05-21");
         $this->assertEquals($expectedArray, $actualArray);
     }
 
@@ -67,13 +89,12 @@ class StatisticsTest extends TestCase
             new DateTime("2025-05-19 20:00:00"),
             "02:00:00"
         );
-        $statistics = new Statistics();
-        $statistics->addTrack($timeTrack);
+        $this->statistics->addTrack($timeTrack);
         $expectedArray = [
             "Family & friends" => "02:00:00",
             'Procrastination' => '22:00:00',
         ];
-        $actualArray = $statistics->getDayStatistics("2025-05-19");
+        $actualArray = $this->statistics->getDayStatistics("2025-05-19");
         $this->assertEquals($expectedArray, $actualArray);
     }
 
@@ -89,15 +110,14 @@ class StatisticsTest extends TestCase
             new DateTime("2025-05-19 08:00:00"),
             "01:00:00"
         );
-        $statistics = new Statistics();
-        $statistics->addTrack($timeTrack1);
-        $statistics->addTrack($timeTrack2);
+        $this->statistics->addTrack($timeTrack1);
+        $this->statistics->addTrack($timeTrack2);
         $expectedArray = [
             "Family & friends" => "02:00:00",
             "Sport & Health" => "01:00:00",
             'Procrastination' => '21:00:00',
         ];
-        $actualArray = $statistics->getDayStatistics("2025-05-19");
+        $actualArray = $this->statistics->getDayStatistics("2025-05-19");
         $this->assertEquals($expectedArray, $actualArray);
     }
 
@@ -113,14 +133,13 @@ class StatisticsTest extends TestCase
             new DateTime("2025-05-19 08:00:00"),
             "01:00:00"
         );
-        $statistics = new Statistics();
-        $statistics->addTrack($timeTrack1);
-        $statistics->addTrack($timeTrack2);
+        $this->statistics->addTrack($timeTrack1);
+        $this->statistics->addTrack($timeTrack2);
         $expectedArray = [
             "Family & friends" => "03:00:00",
             'Procrastination' => '21:00:00',
         ];
-        $actualArray = $statistics->getDayStatistics("2025-05-19");
+        $actualArray = $this->statistics->getDayStatistics("2025-05-19");
         $this->assertEquals($expectedArray, $actualArray);
     }
 
@@ -139,16 +158,15 @@ class StatisticsTest extends TestCase
             new DateTime("2025-05-19 08:00:00"),
             "01:00:00"
         );
-        $statistics = new Statistics();
-        $statistics->addTrack($timeTrack1);
-        $statistics->addTrack($timeTrack2);
+        $this->statistics->addTrack($timeTrack1);
+        $this->statistics->addTrack($timeTrack2);
         $expectedArray = [
             '19.05.2025' => [
                 "Family & friends" => "03:00:00",
                 'Procrastination' => '21:00:00',
             ]
         ];
-        $actualArray = $statistics->getAllDaysStatistics();
+        $actualArray = $this->statistics->getAllDaysStatistics();
         $this->assertEquals($expectedArray, $actualArray);
     }
 }
