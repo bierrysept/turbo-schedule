@@ -2,43 +2,120 @@
 
 namespace Bierrysept\TurboSchedule\Adapters\Console;
 
-class WeekStatisticConsolePresenter
+use Bierrysept\TurboSchedule\Adapters\Interfaces\PrinterInterface;
+use Bierrysept\TurboSchedule\UseCase\Interfaces\WeekStatisticConsolePresenterInterface;
+use DateTime;
+use Exception;
+
+class WeekStatisticConsolePresenter implements WeekStatisticConsolePresenterInterface
 {
 
-    public function __construct()
-    {
-    }
+    public const ROW_DIVIDER = "+---------------+----------+----------+----------+----------+----------+----------+----------+";
+    public const EMPTY_TIME = '--:--:--';
+    public const EMPTY_DATE = "__.__.____";
+    private PrinterInterface $printer;
 
-    public function presents(array $statistics)
+    /**
+     * @throws Exception from DateTime
+     */
+    public function getBaseTable(array $statistics): string
     {
-        $days = [];
         $activities = [];
+        $maxDateYmd = "0000-00-00";
         foreach ($statistics as $day => $dayData) {
-            $days []= $day;
-
+            $dateYmd = (new DateTime($day))->format("Y-m-d");
+            $maxDateYmd = max($maxDateYmd, $dateYmd);
             foreach ($dayData as $activity => $time) {
                 $activities[$activity] ??= [];
                 $activities[$activity][$day] = $time;
             }
         }
 
-        $output = "+---------------+----------+----------+----------+----------+----------+----------+----------+
-|               |";
-        foreach ($days as $day) {
-            $output .= $day . "|";
+        $days = $this->getDatesByWeekDays($maxDateYmd, $statistics);
+
+        return $this->getDaysActivitiesTable($days, $activities);
+    }
+
+    /**
+     * @param int|string $activityName 15 characters is maximum
+     * @return string
+     */
+    private function getFirstCellOfRow(int|string $activityName): string
+    {
+        return sprintf("|%-15s|", $activityName);
+    }
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function present(array $presentData): void
+    {
+        $output = $this->getBaseTable($presentData);
+        $this->printer->echo($output);
+    }
+
+    public function setPrinter(PrinterInterface $printerSpy): void
+    {
+        $this->printer = $printerSpy;
+    }
+
+    /**
+     * @param string $maxDateYmd in YYYY-MM-DD format
+     * @param array $statistics
+     * @return string[]
+     * @throws Exception from DateTime
+     */
+    private function getDatesByWeekDays(string $maxDateYmd, array $statistics): array
+    {
+        $weekdays = [];
+        $currentDay = new DateTime($maxDateYmd);
+        $weekBefore = (clone $currentDay)->modify("-7 days");
+        do {
+            $weekDay = (int) $currentDay->format('N');
+            $date = $currentDay->format('d.m.Y');
+            $weekdays[$weekDay] = isset($statistics[$date]) ? $date : self::EMPTY_DATE;
+            $currentDay->modify('-1 day');
+        } while ($weekBefore != $currentDay);
+
+        ksort($weekdays);
+        return $weekdays;
+    }
+
+    /**
+     * @param array $days
+     * @param array $activities
+     * @return string
+     */
+    private function getDaysActivitiesTable(array $days, array $activities): string
+    {
+        $output = self::ROW_DIVIDER . PHP_EOL . $this->getFirstCellOfRow("");
+        foreach ($days as $date) {
+            $output .= $date . "|";
         }
         $output .= PHP_EOL;
         foreach ($activities as $activityName => $timesByDate) {
-            $output .= "+---------------+----------+----------+----------+----------+----------+----------+----------+";
+            $output .= self::ROW_DIVIDER;
             $output .= PHP_EOL;
-            $output .= sprintf("|%-15s|", $activityName);
-            foreach ($days as $day) {
-                $time = $timesByDate[$day] ?? '--:--:--';
-                $output .= " $time |";
-            }
+            $output .= $this->getActivityRow($activityName, $days, $timesByDate);
             $output .= PHP_EOL;
         }
-        $output .= "+---------------+----------+----------+----------+----------+----------+----------+----------+";
+        $output .= self::ROW_DIVIDER;
+        return $output;
+    }
+
+    /**
+     * @param string $activityName
+     * @param string[] $days
+     * @param string[] $timesByDate
+     * @return string
+     */
+    private function getActivityRow(string $activityName, array $days, array $timesByDate): string
+    {
+        $output = $this->getFirstCellOfRow($activityName);
+        foreach ($days as $date) {
+            $time = $timesByDate[$date] ?? self::EMPTY_TIME;
+            $output .= " $time |";
+        }
         return $output;
     }
 }

@@ -3,11 +3,23 @@
 namespace Bierrysept\TurboSchedule\Tests\Adapters\Console;
 
 use Bierrysept\TurboSchedule\Adapters\Console\WeekStatisticConsolePresenter;
+use Bierrysept\TurboSchedule\Tests\Adapters\Console\Spies\PrinterSpy;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class WeekStatisticConsolePresenterTest extends TestCase
 {
-    public function testDefaultOutput ()
+    private WeekStatisticConsolePresenter $presenter;
+
+    public function setUp(): void
+    {
+        $this->presenter = new WeekStatisticConsolePresenter();
+    }
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function testDefaultOutput (): void
     {
         $input = [
             '19.05.2025' => [
@@ -39,10 +51,13 @@ class WeekStatisticConsolePresenterTest extends TestCase
 |Procrastination| 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 |
 +---------------+----------+----------+----------+----------+----------+----------+----------+
 EOL;
-        $presenter = new WeekStatisticConsolePresenter();
-        $this->assertEquals($output, $presenter->presents($input));
+        $this->assertEquals($output, $this->presenter->getBaseTable($input));
     }
-    public function testDefaultOutputWithOneTrack ()
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function testDefaultOutputWithOneTrack (): void
     {
         $input = [
             '19.05.2025' => [
@@ -77,7 +92,97 @@ EOL;
 |Procrastination| 15:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 | 24:00:00 |
 +---------------+----------+----------+----------+----------+----------+----------+----------+
 EOL;
-        $presenter = new WeekStatisticConsolePresenter();
-        $this->assertEquals($output, $presenter->presents($input));
+        $this->assertEquals($output, $this->presenter->getBaseTable($input));
+    }
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function testWeekLessDaysOutput(): void
+    {
+        $input = [
+            "19.04.2025" => [
+                "Care" => "00:10:24",
+                "Procrastination" => "23:49:36",
+            ]
+        ];
+
+        $output = <<<EOL
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|               |__.__.____|__.__.____|__.__.____|__.__.____|__.__.____|19.04.2025|__.__.____|
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Care           | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 00:10:24 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Procrastination| --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 23:49:36 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+EOL;
+        $this->assertEquals($output, $this->presenter->getBaseTable($input));
+    }
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function testWeekLessDaysWithDayOutsiderOutput(): void
+    {
+        $input = [
+            "19.04.2025" => [
+                "Care" => "00:10:24",
+                "Procrastination" => "23:49:36",
+            ],
+            "19.03.2025" => [
+                "Sleep" => "09:10:24", // Ебать у чувака образ жизни
+                "Procrastination" => "14:49:36", // Ни разу не скотский
+            ]
+        ];
+
+        $output = <<<EOL
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|               |__.__.____|__.__.____|__.__.____|__.__.____|__.__.____|19.04.2025|__.__.____|
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Care           | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 00:10:24 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Procrastination| --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 23:49:36 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Sleep          | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+EOL;
+
+        $this->assertEquals($output, $this->presenter->getBaseTable($input));
+    }
+
+    /**
+     * @throws Exception from DateTime
+     */
+    public function testOutputToPrinter(): void
+    {
+        $printerSpy = new PrinterSpy();
+        $input = [
+            "19.04.2025" => [
+                "Care" => "00:10:24",
+                "Procrastination" => "23:49:36",
+            ],
+            "19.03.2025" => [
+                "Sleep" => "09:10:24", // Ебать у чувака образ жизни
+                "Procrastination" => "14:49:36", // Ни разу не скотский
+            ]
+        ];
+
+        $output = <<<EOL
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|               |__.__.____|__.__.____|__.__.____|__.__.____|__.__.____|19.04.2025|__.__.____|
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Care           | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 00:10:24 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Procrastination| --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | 23:49:36 | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+|Sleep          | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- | --:--:-- |
++---------------+----------+----------+----------+----------+----------+----------+----------+
+EOL;
+
+        $this->presenter->setPrinter($printerSpy);
+        $this->assertFalse($printerSpy->wasCalledEcho());
+        $this->presenter->present($input);
+        $this->assertTrue($printerSpy->wasCalledEcho());
+        $this->assertEquals($output, $printerSpy->getEchos());
     }
 }
