@@ -37,12 +37,16 @@ class WeekStatisticConsolePresenter implements WeekStatisticConsolePresenterInte
     }
 
     /**
-     * @param int|string $activityName 15 characters is maximum
+     * @param string $activityName 15 characters is maximum
      * @return string
      */
-    private function getFirstCellOfRow(int|string $activityName): string
+    private function getFirstCellOfRow(string $activityName): string
     {
-        return sprintf("|%-15s|", $activityName);
+        $length = mb_strlen($activityName);
+        if ($length > 15) {
+            $activityName = mb_substr($activityName, 0, 12) . "...";
+        }
+        return $this->outputWithGap15($activityName);
     }
 
     /**
@@ -117,5 +121,19 @@ class WeekStatisticConsolePresenter implements WeekStatisticConsolePresenterInte
             $output .= " $time |";
         }
         return $output;
+    }
+
+    private function outputWithGap15(...$args): string
+    {
+        $params = $args ?? [];
+
+        $callback = static function ($length) use (&$params) {
+            $value = array_shift($params);
+            return strlen($value) - mb_strlen($value) + $length[0];
+        };
+
+        $format = preg_replace_callback('/(?<=%|%-)\d+(?=s)/', $callback, "|%-15s|");
+
+        return sprintf($format, ...$args);
     }
 }

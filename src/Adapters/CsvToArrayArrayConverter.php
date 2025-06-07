@@ -45,7 +45,7 @@ class CsvToArrayArrayConverter
             return;
         }
         if ($this->symbolIsCellDivider()) {
-            $this->currentRow [] = $this->currentCell;
+            $this->currentRow []= $this->currentCell;
             $this->currentCell = "";
             return;
         }
@@ -55,10 +55,9 @@ class CsvToArrayArrayConverter
             return;
         }
 
-
-        $this->currentRow [] = $this->currentCell;
-        $this->outputTable [] = $this->currentRow;
+        $this->currentRow []= $this->currentCell;
         $this->currentCell = "";
+        $this->outputTable []= $this->currentRow;
         $this->currentRow = [];
     }
 

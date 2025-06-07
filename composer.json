@@ -24,7 +24,8 @@
   },
   "scripts": {
     "generate-csv": "\\Bierrysept\\TurboSchedule\\Realization\\CsvGenerationController::generateCsv",
-    "print-r": "\\Bierrysept\\TurboSchedule\\Realization\\CsvGenerationController::printR"
+    "print-r": "\\Bierrysept\\TurboSchedule\\Realization\\CsvGenerationController::printR",
+    "outputer": "\\Bierrysept\\TurboSchedule\\Realization\\CsvGenerationController::outputBoosted"
   },
   "require": {
     "ext-mbstring": "*"

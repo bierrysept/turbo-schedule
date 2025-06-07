@@ -7,10 +7,14 @@
 
 namespace Bierrysept\TurboSchedule\Realization;
 
+use Bierrysept\TurboSchedule\Adapters\Console\WeekStatisticConsolePresenter;
+use Bierrysept\TurboSchedule\Adapters\Csv\TimeTrackDataRepository;
 use Bierrysept\TurboSchedule\Adapters\CsvToArrayArrayConverter;
 use Bierrysept\TurboSchedule\Adapters\CsvToDictionaryArrayConverter;
 use Bierrysept\TurboSchedule\Adapters\TestCsvDataGenerator;
+use Bierrysept\TurboSchedule\UseCase\WeekConsoleStatisticsCase;
 use Composer\Script\Event;
+use Exception;
 
 /**
  * Controller for run scripts from composer
@@ -48,15 +52,46 @@ class CsvGenerationController
     /**
      * Debug output
      * @used-by \Composer\EventDispatcher\EventDispatcher
-     * @param Event $event
      * @return void
+     * @noinspection ForgottenDebugOutputInspection
      */
-    public static function printR(Event $event):void
+    public static function printR():void
     {
         $file = file_get_contents(dirname(__DIR__, 2)."/temp/boosted.csv");
-//        $converter = new CsvToArrayArrayConverter();
         $converter = new CsvToDictionaryArrayConverter();
         $converter->setCsvConverter(new CsvToArrayArrayConverter());
         print_r($converter->convert($file));
+    }
+
+    /**
+     * Main CSV Output
+     * @used-by \Composer\EventDispatcher\EventDispatcher
+     * @return void
+     * @throws Exception
+     */
+    public static function outputBoosted():void
+    {
+        $filepath = dirname(__DIR__, 2) . "/temp/boosted.csv";
+
+        $fileProcessor = new FileProcessor();
+        $printer = new Printer();
+
+        $csvToArrayArrayConverter = new CsvToArrayArrayConverter();
+
+        $csvToDictionaryArrayConverter = new CsvToDictionaryArrayConverter();
+        $csvToDictionaryArrayConverter->setCsvConverter($csvToArrayArrayConverter);
+
+        $repository = new TimeTrackDataRepository();
+        $repository->setCsvConverter($csvToDictionaryArrayConverter);
+        $repository->setTimeTrackFilePath($filepath);
+        $repository->setFileProcessor($fileProcessor);
+
+        $presenter = new WeekStatisticConsolePresenter();
+        $presenter->setPrinter($printer);
+
+        $case = new WeekConsoleStatisticsCase();
+        $case->setTimeTrackDataRepository($repository);
+        $case->setWeekStatisticConsolePresenter($presenter);
+        $case->run();
     }
 }
